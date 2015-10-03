@@ -13,6 +13,8 @@ parser = argparse.ArgumentParser(
 parser.add_argument('--user', help="Your github username")
 parser.add_argument('--dest',
   help="Repository to clone your repos into. (default: current directory)")
+parser.add_argument('--nopull', action='store_true',
+  help="Disables updating preexisting repos. (default: false)")
 args = parser.parse_args()
 user = args.user
 if not user:
@@ -27,5 +29,10 @@ for repo in g.get_user().get_repos():
       print(repo.full_name)
       subprocess.call(["git", "clone",
                      "https://github.com/" + repo.full_name])
+    elif not args.nopull:
+      print("Updating " + repo.name)
+      os.chdir(repo.name)
+      subprocess.call(["git", "pull"])
+      os.chdir(os.pardir)
     else:
       print("Skipping " + repo.name)
