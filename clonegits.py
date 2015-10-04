@@ -8,10 +8,18 @@ from github import Github
 import os
 import subprocess
 
+def get_repos(gh_agent):
+  ''' Get the repos to clone.'''
+  user = gh_agent.get_user().login
+  for repo in gh_agent.get_user().get_repos():
+    if repo.full_name.startswith(user):
+      yield repo
+  #TODO Get org repos.
+
 def make_args():
   ''' Make the parser for the command line.'''
   parser = argparse.ArgumentParser(
-    description="Clone all of your GitHub repos. Including private repos.");
+    description="Clone all of your GitHub repos. Including private repos.")
   parser.add_argument('--user', help="Your github username")
   parser.add_argument('--token',
     help="OAuth token. Alternative to password authentication.")
@@ -25,10 +33,10 @@ def make_github_agent(cli_args):
   ''' Create the Github object used
       to access their API.'''
   g = None
-  if args.token:
-    g = Github(args.token)
+  if cli_args.token:
+    g = Github(cli_args.token)
   else:
-    user = args.user
+    user = cli_args.user
     if not user:
       user = raw_input('User:')
     passw = getpass.getpass('Password:')
@@ -40,22 +48,20 @@ def main():
   parser = make_args()
   args = parser.parse_args()
   g = make_github_agent(args)
-  user = g.get_user().login
   if args.dest:
     os.chdir(args.dest)
-  for repo in g.get_user().get_repos():
-    if repo.full_name.startswith(user):
-      if not os.path.exists(repo.name):
-        print(repo.full_name)
-        subprocess.call(["git", "clone",
-                       "https://github.com/" + repo.full_name])
-      elif not args.nopull:
-        print("Updating " + repo.name)
-        os.chdir(repo.name)
-        subprocess.call(["git", "pull"])
-        os.chdir(os.pardir)
-      else:
-        print("Skipping " + repo.name)
+  for repo in get_repos(g):
+    if not os.path.exists(repo.name):
+      print(repo.full_name)
+      subprocess.call(["git", "clone",
+                     "https://github.com/" + repo.full_name])
+    elif not args.nopull:
+      print("Updating " + repo.name)
+      os.chdir(repo.name)
+      subprocess.call(["git", "pull"])
+      os.chdir(os.pardir)
+    else:
+      print("Skipping " + repo.name)
 
 if __name__ == '__main__':
   main()
