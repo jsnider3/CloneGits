@@ -7,6 +7,7 @@ import getpass
 from github import Github
 import os
 import subprocess
+import sys
 
 def get_repos(gh_agent):
   ''' Get the repos to clone.'''
@@ -32,25 +33,26 @@ def make_args():
 def make_github_agent(cli_args):
   ''' Create the Github object used
       to access their API.'''
-  g = None
+  gh_agent = None
   if cli_args.token:
-    g = Github(cli_args.token)
+    gh_agent = Github(cli_args.token)
   else:
     user = cli_args.user
     if not user:
-      user = raw_input('User:')
+      print('User:')
+      user = sys.stdin.readline()
     passw = getpass.getpass('Password:')
-    g = Github(user, passw)
-  return g
+    gh_agent = Github(user, passw)
+  return gh_agent
 
 def main():
   ''' Sync a user's GitHub repos with the current machine.'''
   parser = make_args()
   args = parser.parse_args()
-  g = make_github_agent(args)
+  gh_agent = make_github_agent(args)
   if args.dest:
     os.chdir(args.dest)
-  for repo in get_repos(g):
+  for repo in get_repos(gh_agent):
     if not os.path.exists(repo.name):
       print(repo.full_name)
       subprocess.call(["git", "clone",
