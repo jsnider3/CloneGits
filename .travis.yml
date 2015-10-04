@@ -4,4 +4,4 @@ python:
 install: "sudo apt-get install pylint; sudo pip install pygithub"
 # command to run tests
 script: pylint clonegits.py --disable=F0401 \
-            --disable=W0511 --disable=C0330
+            --disable=W0511
