@@ -3,5 +3,4 @@ python:
 # command to install dependencies
 install: "sudo apt-get install pylint; sudo pip install pygithub"
 # command to run tests
-script: pylint clonegits.py --disable=import-error \
-            --disable=fixme --disable=bad-continuation
+script: pylint clonegits.py --disable=fixme --disable=bad-continuation
