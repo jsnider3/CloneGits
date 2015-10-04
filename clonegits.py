@@ -39,8 +39,8 @@ def make_github_agent(cli_args):
   else:
     user = cli_args.user
     if not user:
-      print('User:')
-      user = sys.stdin.readline()
+      print 'User:',
+      user = sys.stdin.readline().strip()
     passw = getpass.getpass('Password:')
     gh_agent = Github(user, passw)
   return gh_agent
@@ -51,6 +51,8 @@ def main():
   args = parser.parse_args()
   gh_agent = make_github_agent(args)
   if args.dest:
+    if not os.path.exists(args.dest):
+      os.makedirs(args.dest)
     os.chdir(args.dest)
   for repo in get_repos(gh_agent):
     if not os.path.exists(repo.name):
