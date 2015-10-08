@@ -12,13 +12,6 @@ class Tests(unittest.TestCase):
       if os.path.isdir(target):
         subprocess.call(['rm', '-rf', target])
 
-  @classmethod
-  def setUpClass(cls):
-    '''Don't log out too fast.'''
-    subprocess.call(['git', 'config', '--global', 'credential.helper',
-                     "'cache --timeout=28800'"])
-
-
   def tearDown(self):
     '''Clean up after ourselves.'''
     self.delete_dirs(os.getcwd())
