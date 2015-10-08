@@ -12,26 +12,34 @@ class Tests(unittest.TestCase):
       if os.path.isdir(target):
         subprocess.call(['rm', '-rf', target])
 
+  @classmethod
+  def setUpClass(cls):
+    '''Don't log out too fast.'''
+    subprocess.call(['git', 'config', '--global', 'credential.helper',
+                     "'cache --timeout=28800'"])
+
+
+  def tearDown(self):
+    '''Clean up after ourselves.'''
+    self.delete_dirs(os.getcwd())
+
   def test_basic(self):
     ''' Test we can run without crashing.'''
     token = os.environ['OAuth']
     assert len(token)
     subprocess.check_output(['python', 'clonegits.py', '--token', token])
-    self.delete_dirs(os.getcwd())
 
   def test_public_repo(self):
     ''' Test we can get a public repo.'''
     token = os.environ['OAuth']
     subprocess.check_output(['python', 'clonegits.py', '--token', token])
     assert "CloneGits" in os.listdir(os.getcwd())
-    self.delete_dirs(os.getcwd())
 
   def test_public_repo(self):
     ''' Test we can get a private repo.'''
     token = os.environ['OAuth']
     subprocess.check_output(['python', 'clonegits.py', '--token', token])
     assert "Resume" in os.listdir(os.getcwd())
-    self.delete_dirs(os.getcwd())
 
 if __name__ == '__main__':
   unittest.main()
