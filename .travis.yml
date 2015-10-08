@@ -1,11 +1,7 @@
 python:
 - '2.7'
-addons:
-  apt:
-    sources:
-    - pylint
-install: pip install --user pygithub
-script: pylint clonegits.py --disable=F0401 --disable=W0511 --disable=W0311
+install: sudo apt-get install pylint; pip install --user pygithub
+script: pylint clonegits.py --disable=F0401 --disable=W0511 --disable=W0311; python tests.py
 env:
   global:
     secure: UXz+stFJ+rb8nBRSuMlNKNs7bgzWBzx2cim6x4hYYcTPDZBFzFaP2yHZLhPLICXC80mir3/rSd9p2tMWUx48YOcViHtXgpvuags0QAXvXPMYT73tPpS5ocM0LFCBZ4mgy5p7yWnelkOaOPmGxaC4v1DVDIJcp72tIF920jtzg5mdBKpA261KSBNRT6XtkAEtR0r2ZhCr5NzChfgXLUwlTacbDFY5j3JajxniG2o5xPof+iJRk0040nNq4RpZ8sp3/Fx6aZd5YvPNeStLOw/+Qq4V27mJcnljBKz7mZ2ufSu4O8Cgg+rjPpKKjewsBxnWReaaUvj/GJ9vFfjJv/OpjKyTuDAFLK3Uc1NedlrcDLbWafAAj23/YlM/CuhlXP+ycCuoYWOXR/XpIG3TXvTPpbpCq3l114Fkaq3+aiGpnLdS5gLMeRTfgMq8jAVyYa1G1RWt/Llk6J3C/eo8hcGhLlho16clyr6kHLLN81HB6i+x9f+bPwt6raaz9gfzdJ1giyG/73fOupH0x3VdxCV/K51gtIyKfkfJhc7nnINv7nzsWnT8d4+J+4c8Xu96r+hcsuMcLprwYhH0jiu+yc99b4lR0ExMAGDJcCC6rvP8J4oxskQKBNIY7entY+tL8LqjvumJus42eOa1JBK7flrbCgo9bBZKw899ePL/fRBym7s=
