@@ -1,4 +1,5 @@
-$!/usr/bin/env bash
+#!/usr/bin/env bash
+set -x
 git config --global credential.helper 'cache --timeout=3000'
-pylint clonegits.py --disable=F0401 --disable=W0511 --disable=W0311;
+pylint clonegits.py --disable=F0401 --disable=W0511 --disable=W0311
 python tests.py
