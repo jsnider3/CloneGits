@@ -28,11 +28,11 @@ class Tests(unittest.TestCase):
     subprocess.check_output(['python', 'clonegits.py', '--token', token])
     assert "CloneGits" in os.listdir(os.getcwd())
 
-  '''def test_private_repo(self):
-    ''' Test we can get a private repo.'''
-    token = os.environ['OAuth']
-    subprocess.check_output(['python', 'clonegits.py', '--token', token])
-    assert "Resume" in os.listdir(os.getcwd())'''
+  #def test_private_repo(self):
+  #  ''' Test we can get a private repo.'''
+  #  token = os.environ['OAuth']
+  #  subprocess.check_output(['python', 'clonegits.py', '--token', token])
+  #  assert "Resume" in os.listdir(os.getcwd())
 
 if __name__ == '__main__':
   unittest.main()
