@@ -1,4 +1,5 @@
 # CloneGits
+[![Build Status](https://travis-ci.org/jsnider3/CloneGits.svg?branch=master)](https://travis-ci.org/jsnider3/CloneGits)
 [![License](https://img.shields.io/github/license/jsnider3/CloneGits.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html)
 
 A tool to clone all of a user's GitHub repos to the local
