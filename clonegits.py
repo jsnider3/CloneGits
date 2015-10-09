@@ -15,7 +15,9 @@ def get_repos(gh_agent):
   for repo in gh_agent.get_user().get_repos():
     if repo.full_name.startswith(user):
       yield repo
-  #TODO Get org repos.
+  for org in gh_agent.get_user().get_orgs():
+    for repo in org.get_repos():
+      yield repo
 
 def make_args():
   ''' Make the parser for the command line.'''
