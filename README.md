@@ -10,8 +10,13 @@ machine.
 Run `python2 clonegits.py` either run it in the target directory
 or use `--dest` to supply it with a directory to download into.
 
-It will ask for your github username and password and then proceed
-to clone all of your repos on GitHub.
+### Authentication
+You have the option to supply a GitHub OAuth token with `--token`,
+otherwise authentication with be done with username/password. You may
+supply a username as an arg with `--user`.
+
+To ensure that private repos are downloaded correctly, you should
+have a GitHub authentication stored with a git credential helper.
 
 ## Requirements
 
