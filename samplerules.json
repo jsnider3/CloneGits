@@ -1,0 +1,19 @@
+[
+{
+  "owner": "techwiz*",
+  "language": "C",
+  "dest": "/tmp/gits/empty"
+},
+{
+  "owner": "Kunal.*",
+  "dest": "/tmp/gits/kunal"
+},
+{
+  "language": "[jJ]ava",
+  "dest": "/tmp/gits/java"
+},
+{
+  "owner": "Josh.*",
+  "dest": "/tmp/gits"
+}
+]
