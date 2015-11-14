@@ -17,13 +17,10 @@ class Rule(object):
     self.org = re.compile(".*")
     self.lang = re.compile(".*")
     if "owner" in src:
-      print(src["owner"])
       self.owner = re.compile(src["owner"])
     if "org" in src:
-      print(src["org"])
       self.org = re.compile(src["org"])
     if "language" in src:
-      print(src["language"])
       self.lang = re.compile(src["language"])
     assert "dest" in src
     self.dest = src["dest"]
@@ -33,7 +30,6 @@ class Rule(object):
     if repo.organization:
       org_name = repo.organization.name
     owner_name = repo.owner.name
-    print(owner_name, org_name, repo.language)
     if repo.parent:
       owner_name = repo.parent.owner.name
     return (self.owner.match(owner_name) and
@@ -52,7 +48,6 @@ class Ruleset(object):
         json_data = src.read()
         for rule_src in json.loads(json_data):
           self.rules.append(Rule(rule_src))
-        print(self.rules)
 
   def get_dest(self, repo):
     ''' Get the destination to store the given repo.'''
