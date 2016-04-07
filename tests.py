@@ -54,7 +54,7 @@ class Tests(unittest.TestCase):
     kwargs["rules_file"] = "samplerules.json"
     rules = clonegits.Ruleset(**kwargs)
     gh_agent = Github()
-    repo = gh_agent.get_repo('jsnider3/StudyNotes')
+    repo = gh_agent.get_repo('jsnider3/HoneyBadger')
     assert rules.get_dest(repo) == '/tmp/gits'
 
   def test_ruleset_default(self):
