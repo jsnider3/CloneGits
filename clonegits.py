@@ -1,10 +1,10 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 '''
   @Author: Josh Snider
 '''
 import argparse
 import getpass
-from github import Github
+from github import Github, GithubException
 import json
 import os
 import re
@@ -98,8 +98,7 @@ def make_github_agent(cli_args):
   else:
     user = cli_args.user
     if not user:
-      print 'User:',
-      user = sys.stdin.readline().strip()
+      user = input('User: ')
     passw = getpass.getpass('Password:')
     gh_agent = Github(user, passw)
   return gh_agent
@@ -119,19 +118,32 @@ def main():
   args = parser.parse_args()
   gh_agent = make_github_agent(args)
   rules = make_rules(args)
-  for repo in get_repos(gh_agent):
-    os.chdir(rules.get_dest(repo))
-    if not os.path.exists(repo.name):
-      print(repo.full_name)
-      subprocess.call(["git", "clone",
-                     "https://github.com/" + repo.full_name])
-    elif not args.nopull:
-      print("Updating " + repo.name)
-      os.chdir(repo.name)
-      subprocess.call(["git", "pull"])
-      os.chdir(os.pardir)
+  try:
+    for repo in get_repos(gh_agent):
+      os.chdir(rules.get_dest(repo))
+      if not os.path.exists(repo.name):
+        print(repo.full_name)
+        clone_url = f"https://github.com/{repo.full_name}"
+        if args.token:
+          clone_url = f"https://x-access-token:{args.token}@github.com/{repo.full_name}"
+        subprocess.call(["git", "clone", clone_url])
+      elif not args.nopull:
+        print("Updating " + repo.name)
+        os.chdir(repo.name)
+        if args.token:
+          subprocess.call(["git", "remote", "set-url", "origin", f"https://x-access-token:{args.token}@github.com/{repo.full_name}"])
+        subprocess.call(["git", "pull"])
+        os.chdir(os.pardir)
+      else:
+        print("Skipping " + repo.name)
+  except GithubException as e:
+    if e.status == 401:
+      print("Authentication failed. Please check your credentials.", file=sys.stderr)
+      print("If you have two-factor authentication enabled, you must use a Personal Access Token.", file=sys.stderr)
+      print("Create one at https://github.com/settings/tokens and use it with the --token flag.", file=sys.stderr)
     else:
-      print("Skipping " + repo.name)
+      print(f"An unexpected GitHub API error occurred: {e}", file=sys.stderr)
+    sys.exit(1)
 
 if __name__ == '__main__':
   main()

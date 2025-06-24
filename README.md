@@ -7,13 +7,13 @@ machine.
 
 ## Usage
 
-Run `python2 clonegits.py` either run it in the target directory
+Run `python3 clonegits.py` either run it in the target directory
 or use `--dest` to supply it with a directory to download into.
 
 ## Requirements
 
-This only requires PyGithub, which can be installed with
-`pip install pygithub`.
+All Python dependencies are listed in `requirements.txt` and can be installed by running:
+`pip install -r requirements.txt`
 
 ### Authentication
 
